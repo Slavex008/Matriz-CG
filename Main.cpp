@@ -4,8 +4,8 @@
 using namespace std;
 
 int main() {
-	int linhas = -2;
-	int colunas = 0;
+	int linhas = 2;
+	int colunas = 3;
 	try {
 		Matriz mat(linhas, colunas);
 		for (int i = 0; i < linhas; i++) {
@@ -14,11 +14,9 @@ int main() {
 			}
 			cout << endl;
 		}
-	} catch (QuantidadeLinhasInvalidaException ex) {
+	} catch (Exception ex) {
 		cout << ex.getMessage();
-	} catch (QuantidadeColunasInvalidaException ex) {
-		cout << ex.getMessage();
-	} 
+	}
 	
 	return 0;
 }

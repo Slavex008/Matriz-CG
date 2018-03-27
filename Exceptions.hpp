@@ -3,18 +3,22 @@
 
 #include <string>
 
-class QuantidadeLinhasInvalidaException {
+class Exception {
 	private:
 		std::string message;
 	public:
-		QuantidadeLinhasInvalidaException(int linha, std::string nome);
+		Exception(int linha, std::string nome, std::string descricao);
 		std::string getMessage();
-	
 };
 
-class QuantidadeColunasInvalidaException {
-	private:
-		std::string message;
+
+class QuantidadeLinhasInvalidaException : public Exception {
+	public:
+		QuantidadeLinhasInvalidaException(int linha, std::string nome);
+		std::string getMessage();
+};
+
+class QuantidadeColunasInvalidaException : public Exception {
 	public:
 		QuantidadeColunasInvalidaException(int linha, std::string nome);
 		std::string getMessage();
