@@ -53,22 +53,111 @@ void Matriz::set(int i, int j, double valor) {
 	this->matriz[i][j] = valor;
 }
 
-void Matriz::operator=(Matriz &matriz) {
-	if(matriz.getLinhas() <= 0 || matriz.getColunas() <= 0) {
+void Matriz::operator=(const Matriz& matriz) {
+	if(matriz.linhas <= 0 || matriz.linhas <= 0) {
 		throw MatrizInvalidaException(__LINE__, NOMEARQUIVO);
 	}
 	this->apagaMatriz();
-	this->linhas = matriz.getLinhas();
-	this->colunas = matriz.getColunas();
+	this->linhas = matriz.linhas;
+	this->colunas = matriz.colunas;
 	this->matriz = new double*[this->linhas];
 	for (int i = 0; i < this->linhas; i++) {
 		this->matriz[i] = new double[this->colunas];
 	}
 	for (int i = 0; i < this->linhas; i++) {
 		for (int j = 0; j < this->colunas; j++) {
-			this->matriz[i][j] = matriz.get(i, j);
+			this->matriz[i][j] = matriz.matriz[i][j];
 		}
 	}
+}
+
+Matriz Matriz::operator+(const Matriz& matriz) {
+	if(this->linhas != matriz.linhas) {
+		throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	if(this->colunas != matriz.colunas) {
+		throw ColunasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	Matriz resultado(this->linhas, this->colunas);
+	for(int i = 0; i < this->linhas; i++) {
+		for (int j = 0; j < this->colunas; j++) {
+			resultado.set(i, j, this->matriz[i][j] + matriz.matriz[i][j]);
+		}
+	}
+	return resultado;
+}
+
+
+void Matriz::operator+=(const Matriz& matriz) {
+	if(this->linhas != matriz.linhas) {
+		throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	if(this->colunas != matriz.colunas) {
+		throw ColunasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	for(int i = 0; i < this->linhas; i++) {
+		for (int j = 0; j < this->colunas; j++) {
+			this->matriz[i][j] = this->matriz[i][j] + matriz.matriz[i][j];
+		}
+	}
+}
+
+Matriz Matriz::operator-(const Matriz& matriz) {
+	if(this->linhas != matriz.linhas) {
+		throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	if(this->colunas != matriz.colunas) {
+		throw ColunasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	Matriz resultado(this->linhas, this->colunas);
+	for(int i = 0; i < this->linhas; i++) {
+		for (int j = 0; j < this->colunas; j++) {
+			resultado.set(i, j, this->matriz[i][j] - matriz.matriz[i][j]);
+		}
+	}
+	return resultado;
+}
+
+void Matriz::operator-=(const Matriz& matriz) {
+	if(this->linhas != matriz.linhas) {
+		throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	if(this->colunas != matriz.colunas) {
+		throw ColunasDiferentesException(__LINE__, NOMEARQUIVO);
+	}
+	for(int i = 0; i < this->linhas; i++) {
+		for (int j = 0; j < this->colunas; j++) {
+			this->matriz[i][j] -= matriz.matriz[i][j];
+		}
+	}
+}
+
+
+Matriz Matriz::operator*(const double& escalar) {
+	Matriz resultado(this->linhas, this->colunas);
+	for(int i = 0; i < this->linhas; i++) {
+		for (int j = 0; j < this->colunas; j++) {
+			resultado.set(i, j, this->matriz[i][j] * escalar);
+		}
+	}
+	return resultado;
+}
+
+Matriz Matriz::operator*(const Matriz& matriz) {
+	if(this->colunas != matriz.linhas) {
+		throw MultiplicacaoIncompativelException(__LINE__, NOMEARQUIVO);
+	}
+	Matriz resultado(this->linhas, matriz.colunas);
+	for(int i = 0; i < this->linhas; i++) {
+		for (int j = 0; j < matriz.colunas; j++) {
+			double soma = 0;
+			for (int k = 0; k < this->colunas; k++) {
+				soma += this->matriz[i][k] * matriz.matriz[k][j];
+			}
+			resultado.set(i, j , soma);
+		}
+	}
+	return resultado;
 }
 
 void Matriz::atribuiMatriz(double** matriz, int linhas, int colunas) {
@@ -100,6 +189,7 @@ void Matriz::imprimeMatriz() {
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 
 int Matriz::getLinhas() {
@@ -109,7 +199,6 @@ int Matriz::getLinhas() {
 int Matriz::getColunas() {
 	return this->colunas;
 }
-
 
 void Matriz::apagaMatriz() {
 	if(linhas > 0 || colunas > 0) {
@@ -125,4 +214,5 @@ void Matriz::apagaMatriz() {
 Matriz::~Matriz() {
 	this->apagaMatriz();
 }
+
 

@@ -46,3 +46,26 @@ MatrizInvalidaException::MatrizInvalidaException(int linha, string nome) :
 string MatrizInvalidaException::getMessage() {
 	return Exception::getMessage();
 }
+
+LinhasDiferentesException::LinhasDiferentesException(int linha, string nome) :
+			Exception::Exception(linha, nome, "O número de linhas das matrizes são diferentes!") {}
+
+string LinhasDiferentesException::getMessage() {
+	return Exception::getMessage();
+}
+
+ColunasDiferentesException::ColunasDiferentesException(int linha, string nome) :
+			Exception::Exception(linha, nome, "O número de linhas das matrizes são diferentes!") {}
+
+string ColunasDiferentesException::getMessage() {
+	return Exception::getMessage();
+}
+
+MultiplicacaoIncompativelException::MultiplicacaoIncompativelException(int linha, string nome) :
+		Exception::Exception(linha, nome, "O número de colunas da primeira matriz deve ser igual ao número de linhas da segunda!") {}
+
+string MultiplicacaoIncompativelException::getMessage() {
+	return Exception::getMessage();
+}
+
+

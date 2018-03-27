@@ -16,7 +16,13 @@ class Matriz {
 		int getColunas();
 		void set(int i, int j, double valor);
 		
-		void operator=(Matriz &matriz);
+		void operator=(const Matriz& matriz);
+		Matriz operator+(const Matriz& matriz);
+		Matriz operator-(const Matriz& matriz);
+		Matriz operator*(const double& escalar);
+		Matriz operator*(const Matriz& matriz);
+		void operator+=(const Matriz& matriz);
+		void operator-=(const Matriz& matriz);
 		void atribuiMatriz(double** matriz, int linhas, int colunas);
 		
 		void imprimeMatriz();

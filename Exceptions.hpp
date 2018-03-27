@@ -22,28 +22,41 @@ class QuantidadeColunasInvalidaException : public Exception {
 	public:
 		QuantidadeColunasInvalidaException(int linha, std::string nome);
 		std::string getMessage();
-	
 };
 
 class PosicaoLinhaInvalidaException : public Exception {
 	public:
 		PosicaoLinhaInvalidaException(int linha, std::string nome);
 		std::string getMessage();
-	
 };
 
 class PosicaoColunaInvalidaException : public Exception {
 	public:
 		PosicaoColunaInvalidaException(int linha, std::string nome);
 		std::string getMessage();
-	
 };
 
 class MatrizInvalidaException : public Exception {
 	public:
 		MatrizInvalidaException(int linha, std::string nome);
 		std::string getMessage();
-	
 };
 
+class LinhasDiferentesException : public Exception {
+	public:
+		LinhasDiferentesException(int linha, std::string nome);
+		std::string getMessage();
+};
+
+class ColunasDiferentesException : public Exception {
+	public:
+		ColunasDiferentesException(int linha, std::string nome);
+		std::string getMessage();
+};
+
+class MultiplicacaoIncompativelException : public Exception {
+	public:
+		MultiplicacaoIncompativelException(int linha, std::string nome);
+		std::string getMessage();
+};
 #endif
