@@ -25,3 +25,24 @@ QuantidadeColunasInvalidaException::QuantidadeColunasInvalidaException(int linha
 string QuantidadeColunasInvalidaException::getMessage() {
 	return Exception::getMessage();
 }
+
+PosicaoLinhaInvalidaException::PosicaoLinhaInvalidaException(int linha, string nome) :
+			Exception::Exception(linha, nome, "Posição de linha inválida!") {}
+
+string PosicaoLinhaInvalidaException::getMessage() {
+	return Exception::getMessage();
+}
+
+PosicaoColunaInvalidaException::PosicaoColunaInvalidaException(int linha, string nome) :
+			Exception::Exception(linha, nome, "Posição de coluna inválida!") {}
+
+string PosicaoColunaInvalidaException::getMessage() {
+	return Exception::getMessage();
+}
+
+MatrizInvalidaException::MatrizInvalidaException(int linha, string nome) :
+			Exception::Exception(linha, nome, "Matriz inválida: quantidade de linhas ou colunas inválidos!") {}
+
+string MatrizInvalidaException::getMessage() {
+	return Exception::getMessage();
+}
