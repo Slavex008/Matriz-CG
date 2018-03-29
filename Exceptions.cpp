@@ -75,4 +75,11 @@ string MatrizNulaException::getMessage() {
     return Exception::getMessage();
 }
 
+LinhasDiferentesColunasException::LinhasDiferentesColunasException(int linha, string nome) :
+        Exception::Exception(linha, nome, "A matriz deve ser quadrada!") {}
+
+string LinhasDiferentesColunasException::getMessage() {
+    return Exception::getMessage();
+}
+
 

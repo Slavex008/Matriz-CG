@@ -40,9 +40,11 @@ int main() {
         mat *= 10;
         cout << " MAT = mat * mat2" << endl;
         cout << mat3 << endl;
-        Matriz mat4(linhas, colunas);
+        int l, c;
+        cin >> l >> c;
+        Matriz mat4(l, c);
         cin >> mat4;
-        cout << mat4;
+        cout << mat4.determinante() << endl;
     } catch (Exception ex) {
         cout << ex.getMessage();
     }
