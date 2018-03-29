@@ -1,5 +1,6 @@
 # Makefile
 
+CXX=g++
 EXFLAGS=
 FLAGS=-Wall -std=c++14 $(EXFLAGS)
 DEPS=Exceptions.hpp Matriz.hpp

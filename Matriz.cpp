@@ -1,6 +1,7 @@
+#include <iostream>
+#include <cmath>
 #include "Matriz.hpp"
 #include "Exceptions.hpp"
-#include <iostream>
 
 #define NOMEARQUIVO "Matriz.cpp"
 
@@ -21,13 +22,13 @@ Matriz::Matriz(int linhas, int colunas) {
     }
     this->linhas = linhas;
     this->colunas = colunas;
-    this->matriz = new double*[this->linhas];
+    this->matriz = new long double*[this->linhas];
     for (int i = 0; i < this->linhas; i++) {
-        this->matriz[i] = new double[this->colunas];
+        this->matriz[i] = new long double[this->colunas];
     }
 }
 
-Matriz::Matriz(double** matriz, int linhas, int colunas) {
+Matriz::Matriz(long double** matriz, int linhas, int colunas) {
     if(linhas <= 0) {
         throw QuantidadeLinhasInvalidaException(__LINE__, NOMEARQUIVO);
     }
@@ -38,13 +39,13 @@ Matriz::Matriz(double** matriz, int linhas, int colunas) {
 }
 
 
-double Matriz::get(int i, int j) {
+long double Matriz::get(int i, int j) {
     testaValidadePosicao(i , j);
     return this->matriz[i][j];
 
 }
 
-void Matriz::set(int i, int j, double valor) {
+void Matriz::set(int i, int j, long double valor) {
     testaValidadePosicao(i, j);
     this->matriz[i][j] = valor;
 }
@@ -56,9 +57,9 @@ void Matriz::operator=(const Matriz& matriz) {
     this->apagaMatriz();
     this->linhas = matriz.linhas;
     this->colunas = matriz.colunas;
-    this->matriz = new double*[this->linhas];
+    this->matriz = new long double*[this->linhas];
     for (int i = 0; i < this->linhas; i++) {
-        this->matriz[i] = new double[this->colunas];
+        this->matriz[i] = new long double[this->colunas];
     }
     for (int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < this->colunas; j++) {
@@ -129,7 +130,7 @@ void Matriz::operator-=(const Matriz& matriz) {
 }
 
 
-Matriz Matriz::operator*(const double& escalar) {
+Matriz Matriz::operator*(const long double& escalar) {
     Matriz resultado(this->linhas, this->colunas);
     for(int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < this->colunas; j++) {
@@ -139,7 +140,7 @@ Matriz Matriz::operator*(const double& escalar) {
     return resultado;
 }
 
-void Matriz::operator*=(const double& escalar) {
+void Matriz::operator*=(const long double& escalar) {
     for(int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < this->colunas; j++) {
             this->matriz[i][j] = this->matriz[i][j] * escalar;
@@ -155,7 +156,7 @@ Matriz Matriz::operator*(const Matriz& matriz) {
     Matriz resultado(this->linhas, matriz.colunas);
     for(int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < matriz.colunas; j++) {
-            double soma = 0;
+            long double soma = 0;
             for (int k = 0; k < this->colunas; k++) {
                 soma += this->matriz[i][k] * matriz.matriz[k][j];
             }
@@ -170,9 +171,9 @@ void Matriz::operator*=(const Matriz& matriz) {
     this->apagaMatriz();
     this->linhas = resultado.linhas;
     this->colunas = resultado.colunas;
-    this->matriz = new double*[this->linhas];
+    this->matriz = new long double*[this->linhas];
     for (int i = 0; i < this->linhas; i++) {
-        this->matriz[i] = new double[this->colunas];
+        this->matriz[i] = new long double[this->colunas];
     }
     for (int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < this->colunas; j++) {
@@ -182,13 +183,61 @@ void Matriz::operator*=(const Matriz& matriz) {
     }
 }
 
+Matriz Matriz::geraMatrizCofator(const int& posI, const int& posJ) {
+    Matriz matrizCofator(this->linhas - 1, this->colunas - 1);
+    for (int i = 0; i < this->linhas; i++) {
+        for (int j = 0; j < this->colunas ; j++) {
+            if(i < posI && j < posJ) {
+                matrizCofator(i, j) = this->matriz[i][j];
+            }
+            if(i < posI && j > posJ) {
+                matrizCofator(i, j - 1) = this->matriz[i][j];
+            }
+            if(i > posI && j < posJ) {
+                matrizCofator(i - 1, j) = this->matriz[i][j];
+            }
+            if(i > posI && j > posJ) {
+                matrizCofator(i - 1, j - 1) = this->matriz[i][j];
+            }
+        }
+        
+    }
+    return matrizCofator;
+}
 
-double& Matriz::operator()(const int& i, const int& j) {
+
+long double Matriz::calculaDeterminante() {
+    if(this->linhas == 1 || this->colunas == 1) {
+        return this->matriz[0][0];
+        
+    }
+    long double det = 0;
+    int fila = 0;
+    for (int i = 0; i < this->colunas; i++) {
+        Matriz matrizCofator = this->geraMatrizCofator(fila, i);
+        det += this->matriz[fila][i] * (pow(-1, fila + i + 2) * matrizCofator.calculaDeterminante());
+        //cout << pow(-1, fila + i + 2) << " ";
+    }
+    return det;
+}
+
+long double Matriz::determinante() {
+    if(this->linhas <=0 || this->colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
+    if(this->linhas != this->colunas) {
+        throw LinhasDiferentesColunasException(__LINE__, NOMEARQUIVO);
+    }
+    return this->calculaDeterminante();
+}
+
+
+long double& Matriz::operator()(const int& i, const int& j) {
     testaValidadePosicao(i, j);
     return this->matriz[i][j];
 }
 
-void Matriz::atribuiMatriz(double** matriz, int linhas, int colunas) {
+void Matriz::atribuiMatriz(long double** matriz, int linhas, int colunas) {
     if(linhas <= 0) {
         throw QuantidadeLinhasInvalidaException(__LINE__, NOMEARQUIVO);
     }
@@ -198,9 +247,9 @@ void Matriz::atribuiMatriz(double** matriz, int linhas, int colunas) {
     this->apagaMatriz();
     this->linhas = linhas;
     this->colunas = colunas;
-    this->matriz = new double*[this->linhas];
+    this->matriz = new long double*[this->linhas];
     for (int i = 0; i < this->linhas; i++) {
-        this->matriz[i] = new double[this->colunas];
+        this->matriz[i] = new long double[this->colunas];
     }
     for (int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < this->colunas; j++) {

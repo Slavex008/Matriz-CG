@@ -66,4 +66,10 @@ class MatrizNulaException : public Exception {
         std::string getMessage();
 };
 
+class LinhasDiferentesColunasException : public Exception {
+    public:
+        LinhasDiferentesColunasException(int linha, std::string nome);
+        std::string getMessage();
+};
+
 #endif

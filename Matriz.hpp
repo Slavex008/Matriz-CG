@@ -7,37 +7,44 @@ class Matriz {
     private:
         int linhas = -1;
         int colunas = -1;
-        double** matriz;
+        long double** matriz;
+        
         void apagaMatriz();
         void testaValidadePosicao(const int& i, const int& j);
+        
+        long double calculaDeterminante();
+        Matriz geraMatrizCofator(const int& posI, const int& posJ);
     public:
         Matriz();
-        Matriz(double** matriz, int linhas, int colunas);
+        Matriz(long double** matriz, int linhas, int colunas);
         Matriz(int linhas, int colunas);
         
         int getLinhas();
         int getColunas();
         
-        double get(int i, int j);
-        double& operator()(const int& i, const int& j);
-        void set(int i, int j, double valor);
+        long double get(int i, int j);
+        long double& operator()(const int& i, const int& j);
+        
+        void set(int i, int j, long double valor);
         
         Matriz operator+(const Matriz& matriz);
         Matriz operator-(const Matriz& matriz);
-        Matriz operator*(const double& escalar);
+        Matriz operator*(const long double& escalar);
         Matriz operator*(const Matriz& matriz);
         
         void operator=(const Matriz& matriz);
         void operator+=(const Matriz& matriz);
         void operator-=(const Matriz& matriz);
-        void operator*=(const double& escalar);
+        void operator*=(const long double& escalar);
         void operator*=(const Matriz& matriz);
         
+        
+        long double determinante();
         
         friend std::ostream& operator<<(std::ostream& os, const Matriz&);
         friend std::istream& operator>> (std::istream& is, Matriz& matriz);
         
-        void atribuiMatriz(double** matriz, int linhas, int colunas);
+        void atribuiMatriz(long double** matriz, int linhas, int colunas);
         ~Matriz();
     
 };
