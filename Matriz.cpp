@@ -51,8 +51,8 @@ void Matriz::set(int i, int j, long double valor) {
 }
 
 void Matriz::operator=(const Matriz& matriz) {
-    if(matriz.linhas <= 0 || matriz.linhas <= 0) {
-        throw MatrizInvalidaException(__LINE__, NOMEARQUIVO);
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
     }
     this->apagaMatriz();
     this->linhas = matriz.linhas;
@@ -69,6 +69,10 @@ void Matriz::operator=(const Matriz& matriz) {
 }
 
 Matriz Matriz::operator+(const Matriz& matriz) {
+    this->testaValidadeMatriz();
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
     if(this->linhas != matriz.linhas) {
         throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
     }
@@ -86,6 +90,10 @@ Matriz Matriz::operator+(const Matriz& matriz) {
 
 
 void Matriz::operator+=(const Matriz& matriz) {
+    this->testaValidadeMatriz();
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
     if(this->linhas != matriz.linhas) {
         throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
     }
@@ -100,6 +108,10 @@ void Matriz::operator+=(const Matriz& matriz) {
 }
 
 Matriz Matriz::operator-(const Matriz& matriz) {
+    this->testaValidadeMatriz();
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
     if(this->linhas != matriz.linhas) {
         throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
     }
@@ -116,6 +128,10 @@ Matriz Matriz::operator-(const Matriz& matriz) {
 }
 
 void Matriz::operator-=(const Matriz& matriz) {
+    this->testaValidadeMatriz();
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
     if(this->linhas != matriz.linhas) {
         throw LinhasDiferentesException(__LINE__, NOMEARQUIVO);
     }
@@ -131,6 +147,7 @@ void Matriz::operator-=(const Matriz& matriz) {
 
 
 Matriz Matriz::operator*(const long double& escalar) {
+    this->testaValidadeMatriz();
     Matriz resultado(this->linhas, this->colunas);
     for(int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < this->colunas; j++) {
@@ -140,7 +157,22 @@ Matriz Matriz::operator*(const long double& escalar) {
     return resultado;
 }
 
+Matriz operator*(const long double& escalar, const Matriz& matriz) {
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
+    Matriz resultado(matriz.linhas, matriz.colunas);
+    for(int i = 0; i < matriz.linhas; i++) {
+        for (int j = 0; j < matriz.colunas; j++) {
+            resultado.set(i, j, matriz.matriz[i][j] * escalar);
+        }
+    }
+    return resultado;
+    
+}
+
 void Matriz::operator*=(const long double& escalar) {
+    this->testaValidadeMatriz();
     for(int i = 0; i < this->linhas; i++) {
         for (int j = 0; j < this->colunas; j++) {
             this->matriz[i][j] = this->matriz[i][j] * escalar;
@@ -150,6 +182,10 @@ void Matriz::operator*=(const long double& escalar) {
 
 
 Matriz Matriz::operator*(const Matriz& matriz) {
+    this->testaValidadeMatriz();
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
     if(this->colunas != matriz.linhas) {
         throw MultiplicacaoIncompativelException(__LINE__, NOMEARQUIVO);
     }
@@ -167,6 +203,10 @@ Matriz Matriz::operator*(const Matriz& matriz) {
 }
 
 void Matriz::operator*=(const Matriz& matriz) {
+    this->testaValidadeMatriz();
+    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
     const Matriz resultado = (*this) * matriz;
     this->apagaMatriz();
     this->linhas = resultado.linhas;
@@ -209,22 +249,20 @@ Matriz Matriz::geraMatrizCofator(const int& posI, const int& posJ) {
 long double Matriz::calculaDeterminante() {
     if(this->linhas == 1 || this->colunas == 1) {
         return this->matriz[0][0];
-        
     }
+    
     long double det = 0;
     int fila = 0;
+    
     for (int i = 0; i < this->colunas; i++) {
         Matriz matrizCofator = this->geraMatrizCofator(fila, i);
         det += this->matriz[fila][i] * (pow(-1, fila + i + 2) * matrizCofator.calculaDeterminante());
-        //cout << pow(-1, fila + i + 2) << " ";
     }
     return det;
 }
 
 long double Matriz::determinante() {
-    if(this->linhas <=0 || this->colunas <= 0) {
-        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
-    }
+    this->testaValidadeMatriz();
     if(this->linhas != this->colunas) {
         throw LinhasDiferentesColunasException(__LINE__, NOMEARQUIVO);
     }
@@ -267,6 +305,12 @@ int Matriz::getColunas() {
     return this->colunas;
 }
 
+void Matriz::testaValidadeMatriz() {
+    if(this->linhas <= 0 || this->colunas <= 0) {
+        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
+    }
+}
+
 void Matriz::testaValidadePosicao(const int& i, const int& j) {
     if(i < 0 || i >= this->linhas) {
         throw PosicaoLinhaInvalidaException(__LINE__, NOMEARQUIVO);
@@ -291,9 +335,7 @@ ostream& operator<<(ostream& os, const Matriz& matriz) {
 }
 
 istream& operator>>(istream& is, Matriz& matriz) {
-    if(matriz.linhas <= 0 || matriz.colunas <= 0) {
-        throw MatrizNulaException(__LINE__, NOMEARQUIVO);
-    }
+    matriz.testaValidadeMatriz();
     for(int i = 0; i < matriz.linhas; i++) {
         for (int j = 0; j < matriz.colunas; j++) {
             is >> matriz.matriz[i][j];

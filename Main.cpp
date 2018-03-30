@@ -21,30 +21,19 @@ int main() {
                 mat2.set(i, j, i * j);
             }
         }
-        //~ cout << " MAT 2 " << endl;
-        //~ mat2.imprimeMatriz();
-        Matriz mat3 = mat * mat2;
-        cout << endl;
-        //~ cout << " MAT 1 " << endl;
-        //~ mat.imprimeMatriz();
-        cout << " MAT 2 " << endl;
+        cout << " MAT2 " << endl;
         cout << mat2 << endl;
-        //~ cout << " MAT 3 " << endl;
-        //~ mat3.imprimeMatriz();
-        cout << " MAT 3 = mat * mat2" << endl;
-        cout << mat3 << endl;
-        double a = mat3(2, 2);
-        a = 43;
-        cout << a << " " << mat3(2, 2) << endl; 
-        Matriz teste;
-        mat *= 10;
-        cout << " MAT = mat * mat2" << endl;
-        cout << mat3 << endl;
-        int l, c;
-        cin >> l >> c;
-        Matriz mat4(l, c);
-        cin >> mat4;
-        cout << mat4.determinante() << endl;
+        cout << "SOMA" << endl;
+        cout << mat + mat2 << endl;
+        cout << "SUBTRACAO" << endl;
+        cout << mat - mat2 << endl;
+        cout << "MULTIPLICACAO MAT x10" << endl;
+        cout << 10 * mat << endl;
+        cout << "MULTIPLICACAO" << endl;
+        cout << mat * mat2 << endl;
+        cout << "DETERMINANTE MAT" << endl;
+        cout << mat.determinante() << endl;
+        
     } catch (Exception ex) {
         cout << ex.getMessage();
     }

@@ -11,6 +11,7 @@ class Matriz {
         
         void apagaMatriz();
         void testaValidadePosicao(const int& i, const int& j);
+        void testaValidadeMatriz();
         
         long double calculaDeterminante();
         Matriz geraMatrizCofator(const int& posI, const int& posJ);
@@ -43,6 +44,7 @@ class Matriz {
         
         friend std::ostream& operator<<(std::ostream& os, const Matriz&);
         friend std::istream& operator>> (std::istream& is, Matriz& matriz);
+        friend Matriz operator*(const long double& escalar, const Matriz& matriz);
         
         void atribuiMatriz(long double** matriz, int linhas, int colunas);
         ~Matriz();
