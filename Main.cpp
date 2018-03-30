@@ -20,7 +20,7 @@ int main() {
             for (int j = 0; j < colunas; j++) {
                 mat2.set(i, j, i * j);
             }
-        }
+        } 
         cout << " MAT2 " << endl;
         cout << mat2 << endl;
         cout << "SOMA" << endl;
@@ -31,15 +31,11 @@ int main() {
         cout << 10 * mat << endl;
         cout << "MULTIPLICACAO" << endl;
         cout << mat * mat2 << endl;
-        cout << "DETERMINANTE MAT" << endl;
+        cout << "DETERMINANTE FORCA BRUTA MAT" << endl;
+        cout << mat.determinanteForcaBruta() << endl;
+        cout << "DETERMINANTE MONTANTE MAT" << endl;
         cout << mat.determinante() << endl;
-        
         cout << "---------------------------" << endl;
-        cin >> linhas >> colunas;
-        Matriz mat4(linhas, colunas);
-        cin >> mat4;
-        cout << mat4.determinante() << endl;
-        
     } catch (Exception ex) {
         cout << ex.getMessage();
     }

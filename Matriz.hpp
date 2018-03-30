@@ -41,6 +41,7 @@ class Matriz {
         
         
         long double determinante();
+        long double determinanteForcaBruta();
         
         friend std::ostream& operator<<(std::ostream& os, const Matriz&);
         friend std::istream& operator>> (std::istream& is, Matriz& matriz);

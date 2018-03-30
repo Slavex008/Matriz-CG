@@ -259,7 +259,7 @@ long double Matriz::calculaDeterminante() {
     return det;
 }
 
-long double Matriz::determinante() {
+long double Matriz::determinanteForcaBruta() {
     this->testaValidadeMatriz();
     if(this->linhas != this->colunas) {
         throw LinhasDiferentesColunasException(__LINE__, NOMEARQUIVO);
@@ -295,6 +295,34 @@ void Matriz::atribuiMatriz(long double** matriz, int linhas, int colunas) {
 }
 
 
+long double Matriz::determinante() {
+    Matriz matrizCopia;
+    matrizCopia = *this;
+    
+    long double p = 1.0;
+    int ordem = this->linhas;
+    for(int k = 0; k < ordem; k++) {
+        Matriz matrizAux;
+        matrizAux = matrizCopia;
+        for (int i = 0; i < ordem; i++) {
+            for (int j = 0; j < ordem; j++)  {
+                if(i != k || j != k) {
+                    long double a = (matrizCopia(k, k) * matrizCopia(i, j));
+                    long double b = (matrizCopia(i, k) * matrizCopia(k, j));
+                    if(p != 0) {
+                        matrizAux(i, j) = (a - b) / p;
+                    } else {
+                        matrizAux(i, j) = 0;
+                    }
+                }
+            }
+        }
+        matrizCopia = matrizAux;
+        p = matrizCopia(k, k);
+    }
+    return p;
+}
+
 int Matriz::getLinhas() {
     return this->linhas;
 }
@@ -326,7 +354,7 @@ ostream& operator<<(ostream& os, const Matriz& matriz) {
         for (int j = 0; j < matriz.colunas; j++) {
             os << matriz.matriz[i][j] << " ";
         }
-        cout << endl;
+        os << endl;
     }
     
     return os;
