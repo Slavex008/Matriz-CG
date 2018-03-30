@@ -34,6 +34,12 @@ int main() {
         cout << "DETERMINANTE MAT" << endl;
         cout << mat.determinante() << endl;
         
+        cout << "---------------------------" << endl;
+        cin >> linhas >> colunas;
+        Matriz mat4(linhas, colunas);
+        cin >> mat4;
+        cout << mat4.determinante() << endl;
+        
     } catch (Exception ex) {
         cout << ex.getMessage();
     }

@@ -225,20 +225,18 @@ void Matriz::operator*=(const Matriz& matriz) {
 
 Matriz Matriz::geraMatrizCofator(const int& posI, const int& posJ) {
     Matriz matrizCofator(this->linhas - 1, this->colunas - 1);
+    int linhaCofator = 0;
+    int colunaCofator = 0;
     for (int i = 0; i < this->linhas; i++) {
-        for (int j = 0; j < this->colunas ; j++) {
-            if(i < posI && j < posJ) {
-                matrizCofator(i, j) = this->matriz[i][j];
+        if(i != posI) {
+            colunaCofator = 0;
+            for (int j = 0; j < this->colunas ; j++) {
+                if(j != posJ) {
+                    matrizCofator(linhaCofator, colunaCofator) = this->matriz[i][j];
+                    colunaCofator++;
+                }
             }
-            if(i < posI && j > posJ) {
-                matrizCofator(i, j - 1) = this->matriz[i][j];
-            }
-            if(i > posI && j < posJ) {
-                matrizCofator(i - 1, j) = this->matriz[i][j];
-            }
-            if(i > posI && j > posJ) {
-                matrizCofator(i - 1, j - 1) = this->matriz[i][j];
-            }
+            linhaCofator++;
         }
         
     }
